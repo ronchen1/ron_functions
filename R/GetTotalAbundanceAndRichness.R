@@ -10,6 +10,6 @@ GetTotalAbundanceAndRichness <- function(Tlong,vars_left,var_right = "species_la
   spec_ind <- seq(length(vars_left)+1,ncol(Twide))
   Twide1 <- mutate(Twide, total_abund = rowSums(Twide[,spec_ind]))
   Twide2 <-  mutate(Twide1,total_richness = rowSums(Twide[,spec_ind]>0))
-  Twide_no_species <- cbind(Twide2[,1:length(vars_left)],Twide2$total_abund,Twide2$total_richness)
+  Twide_no_species <- cbind(Twide2[,1:length(vars_left)],Twide2[,c("total_abund","total_richness")])
   return(Twide_no_species)
 }
