@@ -2,7 +2,7 @@ GetTotalAbundanceAndRichness <- function(Tlong,vars_left,var_right = "species_la
   # Install required packages -----------------------------------------------
   
   if (!require("pacman")) install.packages("pacman")
-  pacman::p_load(tidyvers)
+  pacman::p_load(tidyverse)
   
   # cast into wide format and calculate abundance and richness ----
   Twide <- cast(Tlong,paste0(paste0(vars_left,collapse = " + ")," ~ ",var_right), fun.aggregate = sum, value = var_value) %>% 
@@ -10,5 +10,6 @@ GetTotalAbundanceAndRichness <- function(Tlong,vars_left,var_right = "species_la
   spec_ind <- seq(length(vars_left)+1,ncol(Twide))
   Twide1 <- mutate(Twide, total_abund = rowSums(Twide[,spec_ind]))
   Twide2 <-  mutate(Twide1,total_richness = rowSums(Twide[,spec_ind]>0))
-  return(Twide2)
+  Twide_no_species <- cbind(Twide2[,1:length(vars_left)],Twide2$total_abund,Twide2$total_richness)
+  return(Twide_no_species)
 }
