@@ -13,3 +13,14 @@ GetTotalAbundanceAndRichness <- function(Tlong,vars_left,var_right = "species_la
   Twide_no_species <- cbind(Twide2[,1:length(vars_left)],Twide2[,c("total_abund","total_richness")])
   return(Twide_no_species)
 }
+
+
+SpeciesObs_Long2Wide <- function(Tlong,vars_left,var_right = "species_latin",var_value = "Total") {
+  Ttmp <- Tlong %>% select(eval(vars_left))
+  Dtmp <- Ttmp %>% pivot_wider(names_from = eval(var_right), values_from = eval(var_value), values_fill=0,
+                               values_fn = list(eval(var_value) = sum))
+  by_campaign_unit <- group_by(Dtmp,campaign,unit)
+  Twide <- by_campaign_unit %>% arrange(point_name, .by_group = TRUE)
+  occu <- Twide[,(length(variables)-1):ncol(Twide)]
+  outvars <- list(Twide,occu)
+}
