@@ -20,5 +20,5 @@ list_to_df <- function(ls){
 
 unique_table <- function(data){
   sapply(data, function(x) unique(x[!is.na(x)] %>% sort())) %>%
-    list_to_df() %>% t() %>% dplyr::as_tibble() %>% View("Unique Table")
+    list_to_df() %>% t() %>% dplyr::as_tibble()
 }
